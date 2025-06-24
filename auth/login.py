@@ -1,7 +1,6 @@
 import streamlit as st
 import psycopg2
 import os
-import streamlit_authenticator as stauth
 import datetime
 from dotenv import load_dotenv
 load_dotenv()
