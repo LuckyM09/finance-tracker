@@ -1,0 +1,6 @@
+{
+  "name": "Personal Finance Tracker",
+  "entrypoint": "main.py",
+  "framework": "streamlit",
+  "buildpacks": ["heroku/python"]
+}
