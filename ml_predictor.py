@@ -10,13 +10,7 @@ load_dotenv()
 
 def predict_expenses(user_id):
     try:
-        conn = psycopg2.connect(
-          host=os.getenv("DB_HOST"),
-          database=os.getenv("DB_NAME"),
-          user=os.getenv("DB_USER"),
-          password=os.getenv("DB_PASSWORD"),
-          port=os.getenv("DB_PORT")
-        )
+        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
         cur = conn.cursor()
         cur.execute("SELECT amount, category, expense_date FROM expenses WHERE user_id = %s", (user_id,))
         rows = cur.fetchall()

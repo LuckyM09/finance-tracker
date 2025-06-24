@@ -190,13 +190,7 @@ def main():
     # 💾 Save to PostgreSQL
     if submit:
         try:
-            conn = psycopg2.connect(
-              host=os.getenv("DB_HOST"),
-              database=os.getenv("DB_NAME"),
-              user=os.getenv("DB_USER"),
-              password=os.getenv("DB_PASSWORD"),
-              port=os.getenv("DB_PORT")
-            )
+            conn = psycopg2.connect(os.getenv("DATABASE_URL"))
             cur = conn.cursor()
             cur.execute("""
                 INSERT INTO expenses (user_id, amount, category, note, expense_date)
@@ -214,13 +208,7 @@ def main():
 
     # 📊 Show Table of Expenses
     try:
-        conn = psycopg2.connect(
-            host="db.khtqiehroobqiggodxpr.supabase.co",
-            database="postgres",
-            user="postgres",
-            password="Lucky@1908",
-            port=5432
-        )
+        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
         df = pd.read_sql("SELECT amount, category, note, expense_date FROM expenses WHERE user_id = %s ORDER BY expense_date DESC", conn, params=(user_id,))
         conn.close()
 

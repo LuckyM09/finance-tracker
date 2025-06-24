@@ -65,13 +65,7 @@ def signup_page():
                     st.error("Passwords do not match")
                 elif name and email and username and password:
                     try:
-                        conn = psycopg2.connect(
-                          host=os.getenv("DB_HOST"),
-                          database=os.getenv("DB_NAME"),
-                          user=os.getenv("DB_USER"),
-                          password=os.getenv("DB_PASSWORD"),
-                          port=os.getenv("DB_PORT")
-                        )
+                        conn =  psycopg2.connect(os.getenv("DATABASE_URL"))
                         cur = conn.cursor()
                         cur.execute("SELECT * FROM users WHERE username = %s", (username,))
                         if cur.fetchone():
