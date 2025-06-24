@@ -6,9 +6,7 @@ import os
 from ml_predictor import predict_expenses 
 from datetime import date
 from dotenv import load_dotenv
-from streamlit_cookies_manager import EncryptedCookieManager
-cookies = EncryptedCookieManager(password=os.getenv("COOKIE_SECRET", "my_secret"))
-cookies.load()
+
 load_dotenv()
 
 
@@ -249,6 +247,9 @@ def main():
             with st.container():
 
                 st.altair_chart(chart, use_container_width=True)
+
+
+
 
 
 
