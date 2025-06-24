@@ -6,6 +6,9 @@ import os
 from ml_predictor import predict_expenses 
 from datetime import date
 from dotenv import load_dotenv
+from streamlit_cookies_manager import EncryptedCookieManager
+cookies = EncryptedCookieManager(password=os.getenv("COOKIE_SECRET", "my_secret"))
+cookies.load()
 load_dotenv()
 
 
@@ -174,7 +177,9 @@ def main():
         if st.button("Logout",key="logout_btn"):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
-            st.success("Logged out successfully.")
+            for key in cookies.keys():
+                del cookies[key]
+            cookies.save()
             st.rerun()
 
     st.markdown("<h3 style='color: #ffc107;'>Track Your Daily Expenses</h3>", unsafe_allow_html=True)

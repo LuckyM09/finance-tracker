@@ -1,8 +1,17 @@
 import streamlit as st
 import psycopg2
 import os
+import streamlit_authenticator as stauth
+import datetime
 from dotenv import load_dotenv
 load_dotenv()
+
+cookies = EncryptedCookieManager(
+    prefix="finance_",  # optional namespace
+    password=os.getenv("COOKIE_SECRET", "my_secret")  # use env var in production
+)
+cookies.load()
+
 
 def login_page():
     
@@ -47,6 +56,16 @@ def login_page():
 
     </style>
     """, unsafe_allow_html=True)
+
+
+    
+    if cookies.get("user_id") and cookies.get("username"):
+        st.session_state.logged_in = True
+        st.session_state.user_id = int(cookies["user_id"])
+        st.session_state.username = cookies["username"]
+        st.session_state.name = cookies["full_name"]
+        st.session_state.page = 'dashboard'
+        st.experimental_rerun()
     st.markdown("<h2 style='text-align: center; color: white;'>Welcome Back!</h2>", unsafe_allow_html=True)
 
     # Center content
@@ -73,6 +92,13 @@ def login_page():
                         st.session_state.name = user[1]
                         st.session_state.page = 'dashboard'
                         st.success("Login successful!")
+                        
+                        if remember:
+                            cookies["user_id"] = str(user[0])
+                            cookies["username"] = username
+                            cookies["full_name"] = user[1]
+                            cookies.save()
+
                         st.rerun()
                     else:
                         st.error("Invalid credentials")
@@ -84,4 +110,6 @@ def login_page():
 
             if st.button("Sign up"):
                 st.session_state.page = 'signup'
+
+
 

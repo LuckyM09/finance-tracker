@@ -5,3 +5,4 @@ plotly
 altair
 scikit-learn
 python-dotenv
+streamlit-cookies-manager
